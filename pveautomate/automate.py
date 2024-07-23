@@ -191,7 +191,7 @@ class ProxmoxManager:
             realm (str): Which realm the user belongs to (typically 'pve' or 'pam' unless your cluster has external authentication sources configured)
         """
         ticket, csrf_token = self.authenticate()
-        url = f"{self.base_url}/api2/json/access/users"
+        url = f"{self.proxmox_url}/api2/json/access/users"
         headers = {
             "CSRFPreventionToken": csrf_token,
             "Cookie": f"PVEAuthCookie={ticket}",
