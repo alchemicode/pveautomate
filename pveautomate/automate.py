@@ -212,6 +212,9 @@ class ProxmoxManager:
         response.raise_for_status()
 
     def list_users(self):
+        """
+        Internal method. Returns data array about active users in the cluster
+        """
         ticket, csrf_token = self.authenticate()
         url = f"{self.proxmox_url}/access/users"
         headers = {
@@ -223,9 +226,24 @@ class ProxmoxManager:
 
         if response.status_code == 200:
             data = json.loads(response.text)
-            return data
+            return data['data']
         else:
             return {'status': response.status_code, 'message': 'response.text'}
+
+    def check_if_user(self, find_userid):
+        """
+        Check wether or not given username exists in given realm
+
+        Args:
+            find_userid (str): user id to search for (full userid, e.g. 'foo@pve')
+        """
+        users = self.list_users()
+        for userdict in users:
+            if userdict['userid'] == find_userid:
+                return True
+            
+        return False
+
 
     def destroy_range(self):
         """
