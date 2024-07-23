@@ -129,41 +129,4 @@ class ProxmoxManager:
 
 
 if __name__ == "__main__":
-    proxmox_url = "https://10.0.1.12:8006/api2/json"
-    proxmox_user = "root@pam"
-    proxmox_password = getpass.getpass(f"Authenticate for {proxmox_user}: ")
-    node = "pve4"
-
-    manager = ProxmoxManager(proxmox_url, proxmox_user, proxmox_password, node)
-
-    running = True
-
-    while running:
-        manager.read_vm_data()
-        print(
-            """1. Create Windows range VMs for user
-2. Destroy single VM
-3. Destroy multiple VMs
-4. Destroy ALL range VMs
-5. Create Windows range VMs for multiple users
-Q. Quit"""
-        )
-        c = input("> ")
-        if c == "1":
-            manager.create_win_range()
-        elif c == "5":
-            users = input("Comma-seperated list of users to make VMs for: ")
-            for user in users.split(","):
-                if not '@' in user:
-                    user = user + "@pve"
-                manager.create_win_range(user)
-        elif c == "2":
-            manager.destroy_vm(int(input("VMID to destroy (NO CONFIRMATION): ")))
-        elif c == "3":
-            kaboom = input("Comma-seperated list to remove (NO CONFIRMATION): ")
-            for id in kaboom.split(","):
-                manager.destroy_vm(int(id))
-        elif c == "4":
-            manager.destroy_range()
-        else:
-            running = False
+    print("Stop it")
