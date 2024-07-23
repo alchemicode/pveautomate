@@ -226,9 +226,9 @@ class ProxmoxManager:
 
         if response.status_code == 200:
             data = json.loads(response.text)
-            return data['data']
+            return data["data"]
         else:
-            return {'status': response.status_code, 'message': 'response.text'}
+            return {"status": response.status_code, "message": "response.text"}
 
     def check_if_user(self, find_userid):
         """
@@ -239,11 +239,10 @@ class ProxmoxManager:
         """
         users = self.list_users()
         for userdict in users:
-            if userdict['userid'] == find_userid:
+            if userdict["userid"] == find_userid:
                 return True
-            
-        return False
 
+        return False
 
     def destroy_range(self):
         """

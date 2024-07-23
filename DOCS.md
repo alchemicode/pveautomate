@@ -183,6 +183,30 @@ Create a new user in the given realm
 - `realm` _str_ - Which realm the user belongs to (typically 'pve' or 'pam' unless your cluster has external authentication sources configured)
 - `name` _str, optional_ - Human-readable long name for user (e.g. 'John Doe')
 
+<a id="pveautomate.automate.ProxmoxManager.list_users"></a>
+
+#### list\_users
+
+```python
+def list_users()
+```
+
+Internal method. Returns data array about active users in the cluster
+
+<a id="pveautomate.automate.ProxmoxManager.check_if_user"></a>
+
+#### check\_if\_user
+
+```python
+def check_if_user(find_userid)
+```
+
+Check wether or not given username exists in given realm
+
+**Arguments**:
+
+- `find_userid` _str_ - user id to search for (full userid, e.g. 'foo@pve')
+
 <a id="pveautomate.automate.ProxmoxManager.destroy_range"></a>
 
 #### destroy\_range
