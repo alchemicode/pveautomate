@@ -181,7 +181,7 @@ class ProxmoxManager:
         self.write_vm_data()
         print(f"VM {vmid} on node {self.node} has been destroyed.")
 
-    def create_user(self, new_username, new_password, realm):
+    def create_user(self, new_username, new_password, realm, name=None):
         """
         Create a new user in the given realm
 
@@ -196,7 +196,8 @@ class ProxmoxManager:
             "CSRFPreventionToken": csrf_token,
             "Cookie": f"PVEAuthCookie={ticket}",
         }
-        data = {"userid": f"{new_username}@{realm}", "password": new_password}
+
+        data = {"userid": f"{new_username}@{realm}", "password": new_password, "firstname": name}
 
         response = requests.post(url, headers=headers, data=data, verify=self.verify_ssl)
 
