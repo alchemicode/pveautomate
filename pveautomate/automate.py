@@ -198,11 +198,29 @@ class ProxmoxManager:
             "Cookie": f"PVEAuthCookie={ticket}",
         }
 
-        data = {"userid": f"{new_username}@{realm}", "password": new_password, "firstname": name}
+        data = {
+            "userid": f"{new_username}@{realm}",
+            "password": new_password,
+            "firstname": name,
+        }
 
-        response = requests.post(url, headers=headers, data=data, verify=self.verify_ssl)
+        response = requests.post(
+            url, headers=headers, data=data, verify=self.verify_ssl
+        )
 
         response.raise_for_status()
+
+    def list_users(self):
+        ticket, csrf_token = self.authenticate()
+        url = f"{self.proxmox_url}/access/users"
+        headers = {
+            "CSRFPreventionToken": csrf_token,
+            "Cookie": f"PVEAuthCookie={ticket}",
+        }
+
+        response = requests.get(url, headers=headers, verify=self.verify_ssl)
+
+        return response.text
 
     def destroy_range(self):
         """
