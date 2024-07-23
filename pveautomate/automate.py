@@ -186,9 +186,10 @@ class ProxmoxManager:
         Create a new user in the given realm
 
         Args:
-            new_username (str): The username
+            new_username (str): The username (typically short and lowercase, e.g 'john')
             new_password (str): The user's new password
             realm (str): Which realm the user belongs to (typically 'pve' or 'pam' unless your cluster has external authentication sources configured)
+            name (str, optional): Human-readable long name for user (e.g. 'John Doe')
         """
         ticket, csrf_token = self.authenticate()
         url = f"{self.proxmox_url}/access/users"
