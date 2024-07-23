@@ -1,2 +1,2 @@
 # pveautomate
-Proxmox VE api
+Proxmox VE api (not fully implemented)
