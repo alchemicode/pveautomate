@@ -198,9 +198,9 @@ class ProxmoxManager:
         }
         data = {"userid": f"{new_username}@{realm}", "password": new_password}
 
-        response = requests.post(url, headers=headers, data=data)
+        response = requests.post(url, headers=headers, data=data, verify=self.verify_ssl)
 
-        return (response.status_code, response.text)
+        response.raise_for_status()
 
     def destroy_range(self):
         """
