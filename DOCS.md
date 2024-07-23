@@ -166,6 +166,22 @@ Destroy a VM by its ID.
 
 - `vmid` _int_ - The ID of the VM to destroy.
 
+<a id="pveautomate.automate.ProxmoxManager.create_user"></a>
+
+#### create\_user
+
+```python
+def create_user(new_username, new_password, realm)
+```
+
+Create a new user in the given realm
+
+**Arguments**:
+
+- `new_username` _str_ - The username
+- `new_password` _str_ - The user's new password
+- `realm` _str_ - Which realm the user belongs to (typically 'pve' or 'pam' unless your cluster has external authentication sources configured)
+
 <a id="pveautomate.automate.ProxmoxManager.destroy_range"></a>
 
 #### destroy\_range

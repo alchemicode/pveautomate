@@ -6,8 +6,11 @@ from random import randint
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+
 class ProxmoxManager:
-    def __init__(self, proxmox_url, proxmox_user, proxmox_password, node, verify_ssl=False):
+    def __init__(
+        self, proxmox_url, proxmox_user, proxmox_password, node, verify_ssl=False
+    ):
         """
         Initialize the ProxmoxManager with the required parameters.
 
@@ -26,7 +29,7 @@ class ProxmoxManager:
         self.vm_data_headers = ["VMID", "IP", "OWNER", "HNAME"]
         self.vm_data = []
         self.raw_data = ""
-        
+
     def write_vm_data(self):
         """
         Write VM data to a CSV file.
@@ -99,8 +102,16 @@ class ProxmoxManager:
             dict: The response data from the clone operation.
         """
         clone_url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{template_id}/clone"
-        headers = {"Cookie": f"PVEAuthCookie={ticket}", "CSRFPreventionToken": csrf_token}
-        payload = {"newid": new_id, "name": new_name, "node": self.node, "vmid": template_id}
+        headers = {
+            "Cookie": f"PVEAuthCookie={ticket}",
+            "CSRFPreventionToken": csrf_token,
+        }
+        payload = {
+            "newid": new_id,
+            "name": new_name,
+            "node": self.node,
+            "vmid": template_id,
+        }
         response = requests.post(
             clone_url, headers=headers, data=payload, verify=self.verify_ssl
         )
@@ -118,9 +129,14 @@ class ProxmoxManager:
             user (str): The user to assign admin permissions to.
         """
         acl_url = f"{self.proxmox_url}/access/acl"
-        headers = {"Cookie": f"PVEAuthCookie={ticket}", "CSRFPreventionToken": csrf_token}
+        headers = {
+            "Cookie": f"PVEAuthCookie={ticket}",
+            "CSRFPreventionToken": csrf_token,
+        }
         payload = {"path": f"/vms/{vm_id}", "users": user, "roles": "Administrator"}
-        response = requests.put(acl_url, headers=headers, data=payload, verify=self.verify_ssl)
+        response = requests.put(
+            acl_url, headers=headers, data=payload, verify=self.verify_ssl
+        )
         response.raise_for_status()
 
     def set_vm_desc(self, ticket, csrf_token, vm_id, desc):
@@ -134,11 +150,16 @@ class ProxmoxManager:
             desc (str): The description to set for the VM.
         """
         conf_url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vm_id}/config"
-        headers = {"Cookie": f"PVEAuthCookie={ticket}", "CSRFPreventionToken": csrf_token}
+        headers = {
+            "Cookie": f"PVEAuthCookie={ticket}",
+            "CSRFPreventionToken": csrf_token,
+        }
         payload = {
             "description": desc,
         }
-        response = requests.put(conf_url, headers=headers, data=payload, verify=self.verify_ssl)
+        response = requests.put(
+            conf_url, headers=headers, data=payload, verify=self.verify_ssl
+        )
         response.raise_for_status()
 
     def destroy_vm(self, vmid):
@@ -150,12 +171,36 @@ class ProxmoxManager:
         """
         ticket, csrf_token = self.authenticate()
         delete_url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vmid}"
-        headers = {"Cookie": f"PVEAuthCookie={ticket}", "CSRFPreventionToken": csrf_token}
+        headers = {
+            "Cookie": f"PVEAuthCookie={ticket}",
+            "CSRFPreventionToken": csrf_token,
+        }
         response = requests.delete(delete_url, headers=headers, verify=self.verify_ssl)
         response.raise_for_status()
         self.vm_data = [vm for vm in self.vm_data if str(vm["VMID"]) != str(vmid)]
         self.write_vm_data()
         print(f"VM {vmid} on node {self.node} has been destroyed.")
+
+    def create_user(self, new_username, new_password, realm):
+        """
+        Create a new user in the given realm
+
+        Args:
+            new_username (str): The username
+            new_password (str): The user's new password
+            realm (str): Which realm the user belongs to (typically 'pve' or 'pam' unless your cluster has external authentication sources configured)
+        """
+        ticket, csrf_token = self.authenticate()
+        url = f"{self.base_url}/api2/json/access/users"
+        headers = {
+            "CSRFPreventionToken": csrf_token,
+            "Cookie": f"PVEAuthCookie={ticket}",
+        }
+        data = {"userid": f"{new_username}@{realm}", "password": new_password}
+
+        response = requests.post(url, headers=headers, data=data)
+
+        return (response.status_code, response.text)
 
     def destroy_range(self):
         """
@@ -206,7 +251,9 @@ class ProxmoxManager:
             }
             self.vm_data.append(data)
 
-            self.set_vm_desc(ticket, csrf_token, new_id, "My IP should be set to: " + data["IP"])
+            self.set_vm_desc(
+                ticket, csrf_token, new_id, "My IP should be set to: " + data["IP"]
+            )
 
             print(
                 f"VMID - {new_id}, {new_name} cloned from template {template_id} and permissions assigned to {user}"
