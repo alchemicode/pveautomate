@@ -2,6 +2,7 @@ import requests
 import time
 import urllib3
 import csv
+import json
 from random import randint
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -220,7 +221,11 @@ class ProxmoxManager:
 
         response = requests.get(url, headers=headers, verify=self.verify_ssl)
 
-        return response.text
+        if response.status_code == 200:
+            data = json.loads(response.text)
+            return data
+        else:
+            return {'status': response.status_code, 'message': 'response.text'}
 
     def destroy_range(self):
         """
