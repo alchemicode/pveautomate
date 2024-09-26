@@ -27,7 +27,7 @@ class ProxmoxManager:
         self.proxmox_password = proxmox_password
         self.node = node
         self.verify_ssl = verify_ssl
-        self.vm_data_headers = ["VMID", "IP", "OWNER", "HNAME"]
+        self.vm_data_headers = ["VMID", "OWNER", "HNAME"]
         self.vm_data = []
         self.raw_data = ""
 
@@ -264,7 +264,7 @@ class ProxmoxManager:
         Args:
             user (str): The username to assign to the cloned VMs. Defaults to None.
         """
-        template_vm_ids = [112, 135, 144]
+        template_vm_ids = [100, 101] # TODO: why hardcoded
         if user is None:
             user = input("Owner user (format 'foo@pve' or 'foo@pam'): ")
         uf = user.split("@")[0]
@@ -287,7 +287,6 @@ class ProxmoxManager:
 
             data = {
                 "VMID": str(new_id),
-                "IP": "10.0.1." + str(ip_last_bits),
                 "OWNER": user,
                 "HNAME": new_name,
             }
