@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pveautomate",
-    version="0.1.7",
+    version="0.1.8",
     description="A package to automate Proxmox VE tasks",
     long_description=open("README.md").read()
     + "\n# Usage Docs:\n"
