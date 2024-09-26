@@ -264,7 +264,7 @@ class ProxmoxManager:
         Args:
             user (str): The username to assign to the cloned VMs. Defaults to None.
         """
-        template_vm_ids = [100, 101] # TODO: why hardcoded
+        template_vm_ids = [100, 101]  # TODO: why hardcoded
         if user is None:
             user = input("Owner user (format 'foo@pve' or 'foo@pam'): ")
         uf = user.split("@")[0]
@@ -277,24 +277,12 @@ class ProxmoxManager:
             time.sleep(2)
             self.assign_admin_vm_permissions(ticket, csrf_token, new_id, user)
 
-            ip_last_bits = randint(100, 140)
-            found = True
-            while found:
-                if "." + str(ip_last_bits) not in self.raw_data:
-                    found = False
-                else:
-                    ip_last_bits = randint(100, 140)
-
             data = {
                 "VMID": str(new_id),
                 "OWNER": user,
                 "HNAME": new_name,
             }
             self.vm_data.append(data)
-
-            self.set_vm_desc(
-                ticket, csrf_token, new_id, "My IP should be set to: " + data["IP"]
-            )
 
             print(
                 f"VMID - {new_id}, {new_name} cloned from template {template_id} and permissions assigned to {user}"
