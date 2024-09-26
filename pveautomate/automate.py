@@ -71,7 +71,7 @@ class ProxmoxManager:
         data = response.json()["data"]
         return data["ticket"], data["CSRFPreventionToken"]
 
-    def get_next_vm_id(self, ticket):
+    def get_next_vm_id(self, ticket=None):
         """
         Get the next available VMID for clone/create operations.
 
@@ -82,6 +82,7 @@ class ProxmoxManager:
             int: The next available VMID.
         """
         next_id_url = f"{self.proxmox_url}/cluster/nextid"
+        ticket, _ = self.authenticate()
         headers = {"Cookie": f"PVEAuthCookie={ticket}"}
         response = requests.get(next_id_url, headers=headers, verify=self.verify_ssl)
         response.raise_for_status()
@@ -285,6 +286,78 @@ class ProxmoxManager:
                 f"VMID - {new_id}, {new_name} cloned from template {template_id} and permissions assigned to {user}"
             )
             self.write_vm_data()
+
+    def apply_sdn(self):
+        """
+        Apply SDN settings to the cluster.
+        """
+
+        url = f"{self.proxmox_url}/cluster/sdn"
+        ticket, csrf_token = self.authenticate()
+
+        headers = {
+            "Cookie": f"PVEAuthCookie={ticket}",
+            "CSRFPreventionToken": csrf_token,
+        }
+
+        response = requests.put(url, headers=headers, verify=self.verify_ssl)
+
+        return response.json()
+
+    def add_subnet_to_vnet(self, vnet_id, subnet_cidr, subnet_gateway):
+        """
+        Add a subnet to a given VNET ID.
+
+        Args:
+            ticket (str): The authentication ticket.
+            csrf_token (str): The CSRF prevention token.
+            vnet_id (int): The ID of the VNET.
+            subnet_cidr (str): The CIDR notation of the subnet to add.
+        """
+        vnet_url = f"{self.proxmox_url}/cluster/sdn/vnets/{vnet_id}/subnets"
+
+        ticket, csrf_token = self.authenticate()
+
+        headers = {
+            "Cookie": f"PVEAuthCookie={ticket}",
+            "CSRFPreventionToken": csrf_token,
+        }
+
+        payload = {
+            "subnet": subnet_cidr,
+            "snat": True,
+            "gateway": subnet_gateway,
+            "type": "subnet",
+        }
+
+        response = requests.post(
+            vnet_url, headers=headers, json=payload, verify=self.verify_ssl
+        )
+
+        # self.apply_sdn()
+
+        return str(response.json())
+
+    def destroy_subnet(self, vnet, subnet_cidr):
+        """
+        Destroy a subnet from a given VNET ID.
+
+        Args:
+            vnet (int): The ID of the VNET.
+            subnet_cidr (str): The CIDR notation of the subnet to add.
+        """
+        vnet_url = f"{self.proxmox_url}/cluster/sdn/vnets/{vnet}/subnets/{subnet_cidr}"
+
+        ticket, csrf_token = self.authenticate()
+
+        headers = {
+            "Cookie": f"PVEAuthCookie={ticket}",
+            "CSRFPreventionToken": csrf_token,
+        }
+
+        response = requests.delete(vnet_url, headers=headers, verify=self.verify_ssl)
+
+        return str(response.json())
 
 
 if __name__ == "__main__":

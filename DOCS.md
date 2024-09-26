@@ -81,7 +81,7 @@ This method is usually internal and is used to authorize with the PVE host.
 #### get\_next\_vm\_id
 
 ```python
-def get_next_vm_id(ticket)
+def get_next_vm_id(ticket=None)
 ```
 
 Get the next available VMID for clone/create operations.
@@ -217,8 +217,6 @@ def destroy_range()
 
 Destroy all range VMs.
 
-This method is intended for internal use and may not be suitable for a library.
-
 <a id="pveautomate.automate.ProxmoxManager.create_range"></a>
 
 #### create\_range
@@ -229,9 +227,50 @@ def create_range(ids, user=None)
 
 Create cloned VMs for a given username.
 
-This method is intended for internal use and may not be suitable for a library.
+**Arguments**:
+
+- `ids` _list_ - A list of VMIDs to clone.
+- `user` _str_ - The username to assign to the cloned VMs. Defaults to None.
+
+<a id="pveautomate.automate.ProxmoxManager.apply_sdn"></a>
+
+#### apply\_sdn
+
+```python
+def apply_sdn()
+```
+
+Apply SDN settings to the cluster.
+
+<a id="pveautomate.automate.ProxmoxManager.add_subnet_to_vnet"></a>
+
+#### add\_subnet\_to\_vnet
+
+```python
+def add_subnet_to_vnet(vnet_id, subnet_cidr, subnet_gateway)
+```
+
+Add a subnet to a given VNET ID.
 
 **Arguments**:
 
-- `user` _str_ - The username to assign to the cloned VMs. Defaults to None.
+- `ticket` _str_ - The authentication ticket.
+- `csrf_token` _str_ - The CSRF prevention token.
+- `vnet_id` _int_ - The ID of the VNET.
+- `subnet_cidr` _str_ - The CIDR notation of the subnet to add.
+
+<a id="pveautomate.automate.ProxmoxManager.destroy_subnet"></a>
+
+#### destroy\_subnet
+
+```python
+def destroy_subnet(vnet, subnet_cidr)
+```
+
+Destroy a subnet from a given VNET ID.
+
+**Arguments**:
+
+- `vnet` _int_ - The ID of the VNET.
+- `subnet_cidr` _str_ - The CIDR notation of the subnet to add.
 

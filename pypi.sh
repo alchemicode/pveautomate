@@ -4,3 +4,5 @@ pydoc-markdown > DOCS.md
 ./venv/bin/black .
 ./venv/bin/python setup.py sdist bdist_wheel
 ./venv/bin/twine upload dist/*
+
+rm -rf build dist
