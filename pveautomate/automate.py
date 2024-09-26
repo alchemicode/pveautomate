@@ -247,8 +247,6 @@ class ProxmoxManager:
     def destroy_range(self):
         """
         Destroy all range VMs.
-
-        This method is intended for internal use and may not be suitable for a library.
         """
         self.read_vm_data()
         for vm in self.vm_data:
@@ -259,9 +257,8 @@ class ProxmoxManager:
         """
         Create cloned VMs for a given username.
 
-        This method is intended for internal use and may not be suitable for a library.
-
         Args:
+            ids (list): A list of VMIDs to clone.
             user (str): The username to assign to the cloned VMs. Defaults to None.
         """
         template_vm_ids = ids
