@@ -120,7 +120,7 @@ class ProxmoxManager:
         response.raise_for_status()
         return response.json()["data"]
 
-    def assign_admin_vm_permissions(self, ticket, csrf_token, vm_id, user):
+    def assign_admin_vm_permissions(self, vm_id, user):
         """
         Assign admin permissions to a user for a given VMID.
 
@@ -130,6 +130,7 @@ class ProxmoxManager:
             vm_id (int): The ID of the VM.
             user (str): The user to assign admin permissions to.
         """
+        ticket, csrf_token = self.authenticate()
         acl_url = f"{self.proxmox_url}/access/acl"
         headers = {
             "Cookie": f"PVEAuthCookie={ticket}",
@@ -271,7 +272,7 @@ class ProxmoxManager:
             new_id = self.get_next_vm_id(ticket)
             self.clone_vm(ticket, csrf_token, template_id, new_name, new_id)
             time.sleep(2)
-            self.assign_admin_vm_permissions(ticket, csrf_token, new_id, user)
+            self.assign_admin_vm_permissions(new_id, user)
 
             data = {
                 "VMID": str(new_id),
