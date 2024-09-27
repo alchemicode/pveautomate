@@ -144,7 +144,7 @@ class ProxmoxManager:
         )
         response.raise_for_status()
 
-    def set_vm_desc(self, ticket, csrf_token, vm_id, desc):
+    def set_vm_desc(self, vm_id, desc):
         """
         Set the description (Notes) of a VMID.
 
@@ -155,6 +155,7 @@ class ProxmoxManager:
             desc (str): The description to set for the VM.
         """
         conf_url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vm_id}/config"
+        ticket, csrf_token = self.authenticate()
         headers = {
             "Cookie": f"PVEAuthCookie={ticket}",
             "CSRFPreventionToken": csrf_token,
