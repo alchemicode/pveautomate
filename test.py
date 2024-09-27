@@ -16,8 +16,8 @@ pm = ProxmoxManager(
 # print(pm.apply_sdn())
 # print(pm.create_range([100,101], input("Enter user: ")))
 
-# for vm in range(102,108):
-#    pm.destroy_vm(vm)
+for vm in range(102,110):
+    pm.destroy_vm(vm)
 
 # for i in range(1, 13):
 #    cidr = f"192.168.{i}.0/24"
@@ -25,4 +25,4 @@ pm = ProxmoxManager(
 #    print(pm.add_subnet_to_vnet("foobar", cidr, gateway))
 # pm.apply_sdn()
 
-print(pm.check_if_user("matt@pve"))
+#print(pm.check_if_user("matt@pve"))
