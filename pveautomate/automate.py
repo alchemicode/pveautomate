@@ -82,7 +82,8 @@ class ProxmoxManager:
             int: The next available VMID.
         """
         next_id_url = f"{self.proxmox_url}/cluster/nextid"
-        ticket, _ = self.authenticate()
+        if not ticket:
+            ticket, _ = self.authenticate()
         headers = {"Cookie": f"PVEAuthCookie={ticket}"}
         response = requests.get(next_id_url, headers=headers, verify=self.verify_ssl)
         response.raise_for_status()
