@@ -76,7 +76,7 @@ class ProxmoxManager:
         Get the next available VMID for clone/create operations.
 
         Args:
-            ticket (str): The authentication ticket.
+            ticket (str, optional): The authentication ticket.
 
         Returns:
             int: The next available VMID.
@@ -95,8 +95,6 @@ class ProxmoxManager:
         Clone a VM or template to a new VMID and assign a new name.
 
         Args:
-            ticket (str): The authentication ticket.
-            csrf_token (str): The CSRF prevention token.
             template_id (int): The ID of the template to clone.
             new_name (str): The new name for the cloned VM.
             new_id (int): The new VMID for the cloned VM.
@@ -127,8 +125,6 @@ class ProxmoxManager:
         Assign admin permissions to a user for a given VMID.
 
         Args:
-            ticket (str): The authentication ticket.
-            csrf_token (str): The CSRF prevention token.
             vm_id (int): The ID of the VM.
             user (str): The user to assign admin permissions to.
         """
@@ -149,8 +145,6 @@ class ProxmoxManager:
         Set the description (Notes) of a VMID.
 
         Args:
-            ticket (str): The authentication ticket.
-            csrf_token (str): The CSRF prevention token.
             vm_id (int): The ID of the VM.
             desc (str): The description to set for the VM.
         """
@@ -311,8 +305,6 @@ class ProxmoxManager:
         Add a subnet to a given VNET ID.
 
         Args:
-            ticket (str): The authentication ticket.
-            csrf_token (str): The CSRF prevention token.
             vnet_id (int): The ID of the VNET.
             subnet_cidr (str): The CIDR notation of the subnet to add.
         """
