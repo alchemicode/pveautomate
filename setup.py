@@ -5,8 +5,8 @@ setup(
     version="0.1.9",
     description="A package to automate Proxmox VE tasks",
     long_description=open("README.md").read()
-    + "\n# Usage Docs:\n"
-    + open("DOCS.md").read(),
+    + "\n\n# Usage Docs:\n"
+    + open("docs.html").read(),
     long_description_content_type="text/markdown",
     author="Matt Compton",
     author_email="matt@alchemicode.com",

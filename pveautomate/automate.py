@@ -254,7 +254,7 @@ class ProxmoxManager:
             print("Destroying VMID " + str(vm["VMID"]))
             self.destroy_vm(vm["VMID"])
 
-    def create_range(self, ids, user=None):
+    def create_range(self, ids, user):
         """
         Create cloned VMs for a given username.
 
@@ -263,8 +263,6 @@ class ProxmoxManager:
             user (str): The username to assign to the cloned VMs. Defaults to None.
         """
         template_vm_ids = ids
-        if user is None:
-            user = input("Owner user (format 'foo@pve' or 'foo@pam'): ")
         uf = user.split("@")[0]
         new_instance_names = [uf + "-win1", uf + "-win2", uf + "-win3"]
 
