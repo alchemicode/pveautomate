@@ -89,7 +89,7 @@ class ProxmoxManager:
         next_id = response.json()["data"]
         return next_id
 
-    def clone_vm(self, ticket, csrf_token, template_id, new_name, new_id):
+    def clone_vm(self, template_id, new_name, new_id):
         """
         Clone a VM or template to a new VMID and assign a new name.
 
@@ -104,6 +104,7 @@ class ProxmoxManager:
             dict: The response data from the clone operation.
         """
         clone_url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{template_id}/clone"
+        ticket, csrf_token = self.authenticate()
         headers = {
             "Cookie": f"PVEAuthCookie={ticket}",
             "CSRFPreventionToken": csrf_token,
@@ -267,10 +268,10 @@ class ProxmoxManager:
         uf = user.split("@")[0]
         new_instance_names = [uf + "-win1", uf + "-win2", uf + "-win3"]
 
-        ticket, csrf_token = self.authenticate()
+        ticket, _ = self.authenticate()
         for template_id, new_name in zip(template_vm_ids, new_instance_names):
             new_id = self.get_next_vm_id(ticket)
-            self.clone_vm(ticket, csrf_token, template_id, new_name, new_id)
+            self.clone_vm(template_id, new_name, new_id)
             time.sleep(2)
             self.assign_admin_vm_permissions(new_id, user)
 
