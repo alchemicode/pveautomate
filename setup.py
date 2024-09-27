@@ -2,9 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name="pveautomate",
-    version="0.2.0",
+    version="0.2.3",
     description="A package to automate Proxmox VE tasks",
     long_description=open("README.md").read()
+    + "\n\n# Example Usage:\n"
+    + open("EXAMPLES.md").read()
     + "\n\n# Usage Docs:\n"
     + open("DOCS.md").read(),
     long_description_content_type="text/markdown",
