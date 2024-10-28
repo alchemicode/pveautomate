@@ -341,7 +341,6 @@ class ProxmoxManager:
             subnet_cidr (str): The CIDR notation of the subnet to add.
         """
         vnet_url = f"{self.proxmox_url}/cluster/sdn/vnets/{vnet}/subnets/{subnet_cidr}"
-
         ticket, csrf_token = self.authenticate()
 
         headers = {
@@ -352,6 +351,39 @@ class ProxmoxManager:
         response = requests.delete(vnet_url, headers=headers, verify=self.verify_ssl)
 
         return str(response.json())
+
+    def set_vm_power_status(self, vmid, state):
+        """
+        Set the power state of a VM
+
+        Args:
+            vmid (int): The ID of the VM
+            state (str): The desired state of the VM. One of "start", "stop", "reset", "shutdown", "suspend", "resume", or "reboot"
+        """
+        ticket, csrf_token = self.authenticate()
+        if state == "start":
+            url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vmid}/status/start"
+        elif state == "stop":
+            url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vmid}/status/stop"
+        elif state == "reset":
+            url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vmid}/status/reset"
+        elif state == "shutdown":
+            url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vmid}/status/shutdown"
+        elif state == "suspend":
+            url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vmid}/status/suspend"
+        elif state == "resume":
+            url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vmid}/status/resume"
+        elif state == "reboot":
+            url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vmid}/status/reboot"
+        else:
+            return "Invalid state"
+
+        headers = {
+            "Cookie": f"PVEAuthCookie={ticket}",
+            "CSRFPreventionToken": csrf_token,
+        }
+
+        response = requests.post(url, headers=headers, verify=self.verify_ssl)
 
 
 if __name__ == "__main__":

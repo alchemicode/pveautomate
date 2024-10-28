@@ -88,7 +88,7 @@ Get the next available VMID for clone/create operations.
 
 **Arguments**:
 
-- `ticket` _str_ - The authentication ticket.
+- `ticket` _str, optional_ - The authentication ticket.
   
 
 **Returns**:
@@ -107,8 +107,6 @@ Clone a VM or template to a new VMID and assign a new name.
 
 **Arguments**:
 
-- `ticket` _str_ - The authentication ticket.
-- `csrf_token` _str_ - The CSRF prevention token.
 - `template_id` _int_ - The ID of the template to clone.
 - `new_name` _str_ - The new name for the cloned VM.
 - `new_id` _int_ - The new VMID for the cloned VM.
@@ -130,8 +128,6 @@ Assign admin permissions to a user for a given VMID.
 
 **Arguments**:
 
-- `ticket` _str_ - The authentication ticket.
-- `csrf_token` _str_ - The CSRF prevention token.
 - `vm_id` _int_ - The ID of the VM.
 - `user` _str_ - The user to assign admin permissions to.
 
@@ -147,8 +143,6 @@ Set the description (Notes) of a VMID.
 
 **Arguments**:
 
-- `ticket` _str_ - The authentication ticket.
-- `csrf_token` _str_ - The CSRF prevention token.
 - `vm_id` _int_ - The ID of the VM.
 - `desc` _str_ - The description to set for the VM.
 
@@ -254,8 +248,6 @@ Add a subnet to a given VNET ID.
 
 **Arguments**:
 
-- `ticket` _str_ - The authentication ticket.
-- `csrf_token` _str_ - The CSRF prevention token.
 - `vnet_id` _int_ - The ID of the VNET.
 - `subnet_cidr` _str_ - The CIDR notation of the subnet to add.
 

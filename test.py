@@ -12,17 +12,6 @@ pm = ProxmoxManager(
     "ccdc",
 )
 
-# print(pm.add_subnet_to_vnet("foobar", "192.167.1.0/24", "192.167.1.1"))
-# print(pm.apply_sdn())
-# print(pm.create_range([100,101], input("Enter user: ")))
+# pm.clone_vm(1002, "loltest", pm.get_next_vm_id())
 
-for vm in range(102, 110):
-    pm.destroy_vm(vm)
-
-# for i in range(1, 13):
-#    cidr = f"192.168.{i}.0/24"
-#    gateway = f"192.168.{i}.1"
-#    print(pm.add_subnet_to_vnet("foobar", cidr, gateway))
-# pm.apply_sdn()
-
-# print(pm.check_if_user("matt@pve"))
+pm.assign_admin_vm_permissions(102, "matt@pve")
