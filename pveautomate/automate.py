@@ -250,6 +250,7 @@ class ProxmoxManager:
         self.read_vm_data()
         for vm in self.vm_data:
             print("Destroying VMID " + str(vm["VMID"]))
+            self.set_vm_power_status(vm["VMID"], "stop")
             self.destroy_vm(vm["VMID"])
 
     def create_range(self, ids, user):
