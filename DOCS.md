@@ -266,3 +266,33 @@ Destroy a subnet from a given VNET ID.
 - `vnet` _int_ - The ID of the VNET.
 - `subnet_cidr` _str_ - The CIDR notation of the subnet to add.
 
+<a id="pveautomate.automate.ProxmoxManager.set_vm_power_status"></a>
+
+#### set\_vm\_power\_status
+
+```python
+def set_vm_power_status(vmid, state)
+```
+
+Set the power state of a VM
+
+**Arguments**:
+
+- `vmid` _int_ - The ID of the VM
+- `state` _str_ - The desired state of the VM. One of "start", "stop", "reset", "shutdown", "suspend", "resume", or "reboot"
+
+<a id="pveautomate.automate.ProxmoxManager.set_password"></a>
+
+#### set\_password
+
+```python
+def set_password(user, passw)
+```
+
+Set the password of a user
+
+**Arguments**:
+
+- `user` _str_ - The username of the user (include realm, e.g. 'john@pve')
+- `passw` _str_ - The new
+

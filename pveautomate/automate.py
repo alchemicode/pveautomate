@@ -402,5 +402,6 @@ class ProxmoxManager:
         body = {"userid": user, "password": passw}
         response = requests.put(url, headers=headers, data=body, verify=self.verify_ssl)
 
+
 if __name__ == "__main__":
     print("Stop it")
