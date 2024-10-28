@@ -385,6 +385,22 @@ class ProxmoxManager:
 
         response = requests.post(url, headers=headers, verify=self.verify_ssl)
 
+    def set_password(self, user, passw):
+        """
+        Set the password of a user
+
+        Args:
+            user (str): The username of the user (include realm, e.g. 'john@pve')
+            passw (str): The new
+        """
+        ticket, csrf_token = self.authenticate()
+        url = f"{self.proxmox_url}/access/password"
+        headers = {
+            "CSRFPreventionToken": csrf_token,
+            "Cookie": f"PVEAuthCookie={ticket}",
+        }
+        body = {"userid": user, "password": passw}
+        response = requests.put(url, headers=headers, data=body, verify=self.verify_ssl)
 
 if __name__ == "__main__":
     print("Stop it")
