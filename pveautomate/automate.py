@@ -403,6 +403,35 @@ class ProxmoxManager:
         body = {"userid": user, "password": passw}
         response = requests.put(url, headers=headers, data=body, verify=self.verify_ssl)
 
+    def snapshot_vm(self, vmid, snapshot_name, description=None, vmstate=False):
+        """
+        Create a snapshot for a given VMID.
+
+        Args:
+            vmid (int): The ID of the VM.
+            snapshot_name (str): The name of the snapshot.
+            description (str, optional): The description of the snapshot.
+            vmstate (bool): Whether to save the VM state (RAM). Defaults to False.
+        """
+        snapshot_url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vmid}/snapshot"
+        ticket, csrf_token = self.authenticate()
+        headers = {
+            "Cookie": f"PVEAuthCookie={ticket}",
+            "CSRFPreventionToken": csrf_token,
+        }
+        payload = {
+            "snapname": snapshot_name,
+            "vmstate": vmstate,
+        }
+        if description:
+            payload["description"] = description
+
+        response = requests.post(
+            snapshot_url, headers=headers, data=payload, verify=self.verify_ssl
+        )
+
+        return response.json()["data"]
+
 
 if __name__ == "__main__":
     print("Stop it")
