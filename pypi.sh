@@ -1,4 +1,8 @@
-[[ ! -d venv ]] && python3 -m venv venv && ./venv/bin/pip install setuptools wheel twine black
+#!/usr/bin/env bash
+
+set -e
+
+[[ ! -d venv ]] && python3 -m venv venv && ./venv/bin/pip install setuptools wheel twine black pydoc-markdown
 
 pydoc-markdown > DOCS.md
 ./venv/bin/black .

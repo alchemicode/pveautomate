@@ -403,7 +403,9 @@ class ProxmoxManager:
         body = {"userid": user, "password": passw}
         response = requests.put(url, headers=headers, data=body, verify=self.verify_ssl)
 
-    def snapshot_vm(self, vmid, snapshot_name, description=None, vmstate=False):
+    def snapshot_vm(
+        self, vmid, snapshot_name, description=None, vmstate=False, snode=None
+    ):
         """
         Create a snapshot for a given VMID.
 
@@ -411,9 +413,17 @@ class ProxmoxManager:
             vmid (int): The ID of the VM.
             snapshot_name (str): The name of the snapshot.
             description (str, optional): The description of the snapshot.
-            vmstate (bool): Whether to save the VM state (RAM). Defaults to False.
+            vmstate (bool, optional): Whether to save the VM state (RAM). Defaults to False.
+            snode (str, optional): Node that the VM is on (if different than the API node)
         """
-        snapshot_url = f"{self.proxmox_url}/nodes/{self.node}/qemu/{vmid}/snapshot"
+
+        snap_node = None
+        if snode:
+            snap_node = snode
+        else:
+            snap_node = self.node
+
+        snapshot_url = f"{self.proxmox_url}/nodes/{snap_node}/qemu/{vmid}/snapshot"
         ticket, csrf_token = self.authenticate()
         headers = {
             "Cookie": f"PVEAuthCookie={ticket}",
@@ -427,10 +437,10 @@ class ProxmoxManager:
             payload["description"] = description
 
         response = requests.post(
-            snapshot_url, headers=headers, data=payload, verify=self.verify_ssl
+            snapshot_url, headers=headers, json=payload, verify=self.verify_ssl
         )
 
-        return response.json()["data"]
+        return response.json()
 
 
 if __name__ == "__main__":

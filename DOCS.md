@@ -296,3 +296,25 @@ Set the password of a user
 - `user` _str_ - The username of the user (include realm, e.g. 'john@pve')
 - `passw` _str_ - The new
 
+<a id="pveautomate.automate.ProxmoxManager.snapshot_vm"></a>
+
+#### snapshot\_vm
+
+```python
+def snapshot_vm(vmid,
+                snapshot_name,
+                description=None,
+                vmstate=False,
+                snode=None)
+```
+
+Create a snapshot for a given VMID.
+
+**Arguments**:
+
+- `vmid` _int_ - The ID of the VM.
+- `snapshot_name` _str_ - The name of the snapshot.
+- `description` _str, optional_ - The description of the snapshot.
+- `vmstate` _bool, optional_ - Whether to save the VM state (RAM). Defaults to False.
+- `snode` _str, optional_ - Node that the VM is on (if different than the API node)
+
