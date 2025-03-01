@@ -177,6 +177,21 @@ Create a new user in the given realm
 - `realm` _str_ - Which realm the user belongs to (typically 'pve' or 'pam' unless your cluster has external authentication sources configured)
 - `name` _str, optional_ - Human-readable long name for user (e.g. 'John Doe')
 
+<a id="pveautomate.automate.ProxmoxManager.set_user_group"></a>
+
+#### set\_user\_group
+
+```python
+def set_user_group(user, group)
+```
+
+Set the group of a user
+
+**Arguments**:
+
+- `user` _str_ - The username of the user (include realm, e.g. 'john@pve')
+- `group` _str_ - The group to assign to the user
+
 <a id="pveautomate.automate.ProxmoxManager.list_users"></a>
 
 #### list\_users

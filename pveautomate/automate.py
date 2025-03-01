@@ -210,6 +210,27 @@ class ProxmoxManager:
 
         response.raise_for_status()
 
+    def set_user_group(self, user, group):
+        """
+        Set the group of a user
+
+        Args:
+            user (str): The username of the user (include realm, e.g. 'john@pve')
+            group (str): The group to assign to the user
+        """
+        ticket, csrf_token = self.authenticate()
+        url = f"{self.proxmox_url}/access/users/{user}"
+        headers = {
+            "CSRFPreventionToken": csrf_token,
+            "Cookie": f"PVEAuthCookie={ticket}",
+        }
+
+        data = {"groups": group}
+
+        response = requests.put(url, headers=headers, data=data, verify=self.verify_ssl)
+
+        response.raise_for_status()
+
     def list_users(self):
         """
         Internal method. Returns data array about active users in the cluster
