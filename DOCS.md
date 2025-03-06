@@ -65,7 +65,7 @@ This method is usually internal and is used to load data on range VMs from a CSV
 #### authenticate
 
 ```python
-def authenticate()
+def authenticate(username=None, password=None)
 ```
 
 Authenticate with the Proxmox VE host and obtain a ticket and CSRF token.
@@ -75,6 +75,20 @@ This method is usually internal and is used to authorize with the PVE host.
 **Returns**:
 
 - `tuple` - A tuple containing the ticket and CSRF token.
+
+<a id="pveautomate.automate.ProxmoxManager.validate_creds"></a>
+
+#### validate\_creds
+
+```python
+def validate_creds(username, password)
+```
+
+Validate arbitrary credentials
+
+**Returns**:
+
+- `bool` - True if credentials were accepted, otherwise false
 
 <a id="pveautomate.automate.ProxmoxManager.get_next_vm_id"></a>
 

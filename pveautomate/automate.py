@@ -53,7 +53,7 @@ class ProxmoxManager:
             self.vm_data = [row for row in reader]
             self.raw_data = file.read()
 
-    def authenticate(self):
+    def authenticate(self, username=None, password=None):
         """
         Authenticate with the Proxmox VE host and obtain a ticket and CSRF token.
 
@@ -62,14 +62,32 @@ class ProxmoxManager:
         Returns:
             tuple: A tuple containing the ticket and CSRF token.
         """
-        response = requests.post(
-            f"{self.proxmox_url}/access/ticket",
-            data={"username": self.proxmox_user, "password": self.proxmox_password},
-            verify=self.verify_ssl,
-        )
-        response.raise_for_status()
-        data = response.json()["data"]
-        return data["ticket"], data["CSRFPreventionToken"]
+
+        du = self.proxmox_user if username is None else username
+        dp = self.proxmox_password if password is None else password
+
+        try:
+            response = requests.post(
+                f"{self.proxmox_url}/access/ticket",
+                data={"username": du, "password": dp},
+                verify=self.verify_ssl,
+            )
+            response.raise_for_status()
+            data = response.json()["data"]
+            return data["ticket"], data["CSRFPreventionToken"]
+        except:
+            return None
+
+    def validate_creds(self, username, password):
+        """
+        Validate arbitrary credentials
+
+        Returns:
+            bool: True if credentials were accepted, otherwise false
+        """
+        if self.authenticate(username, password):
+            return True
+        return False
 
     def get_next_vm_id(self, ticket=None):
         """
