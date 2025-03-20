@@ -302,7 +302,11 @@ class ProxmoxManager:
         """
         template_vm_ids = ids
         uf = user.split("@")[0]
-        new_instance_names = [uf + "-win1", uf + "-win2", uf + "-win3"]
+        new_instance_names = []
+        n = 0
+        for nvm in template_vm_ids:
+            new_instance_names.append(uf + "-range" + str(n))
+            n += 1
 
         ticket, _ = self.authenticate()
         for template_id, new_name in zip(template_vm_ids, new_instance_names):
