@@ -108,7 +108,7 @@ class ProxmoxManager:
         next_id = response.json()["data"]
         return next_id
 
-    def clone_vm(self, template_id, new_name, new_id):
+    def clone_vm(self, template_id, new_name, new_id, full=False):
         """
         Clone a VM or template to a new VMID and assign a new name.
 
@@ -116,6 +116,7 @@ class ProxmoxManager:
             template_id (int): The ID of the template to clone.
             new_name (str): The new name for the cloned VM.
             new_id (int): The new VMID for the cloned VM.
+            full (boolean): Is this a linked clone? (Full = True is non-linked clone)
 
         Returns:
             dict: The response data from the clone operation.
@@ -131,6 +132,7 @@ class ProxmoxManager:
             "name": new_name,
             "node": self.node,
             "vmid": template_id,
+            "full": full
         }
         response = requests.post(
             clone_url, headers=headers, data=payload, verify=self.verify_ssl
